@@ -69,7 +69,7 @@ from pyspark.context import SparkContext
 
 #Imports PySpark SQL functions for data transformations.
 from pyspark.sql.functions import (
-    col, to_date, trim, upper, when, year, month
+    col, to_date, trim, upper, when, year, month, to_timestamp
 )
 
 # ---------------------------------------------------------------------------------
@@ -109,8 +109,8 @@ for column in df.columns:
 
 # Convert datatypes
 df = (
-    df.withColumn("order_date", to_date(col("order_date"), "yyyy-MM-dd"))
-      .withColumn("order_id", col("order_id").cast("int"))
+    df.withColumn("order_date", to_timestamp(col("order_date"), "yyyy-MM-dd HH:mm:ss"))
+    .withColumn("order_id", col("order_id").cast("int"))
 )
 
 # Remove invalid rows
@@ -156,10 +156,24 @@ Make sure you replace the S3 destination path, AWS Glue database and table.
 
 ![jobdetails](images/job_details.png)
 
+5. Save the script and clicking on **Run** to initiate running of the job
+
+![run](images/run.png)
+
+
+6. Below shows the running of the job
+
+![running](images/job_ruung.png)
+
+7. Below shows the outputs folder **clean** created by the job and the input folder which contained the data **raw**
+
+![s3](images/s3_showing.png)
+
+
+
 
 ## 🧼 What This Script Actually Does
 
-Your Medium readers will appreciate clarity. Use the breakdown below:
 
 ### 1️⃣ Ingestion
 
@@ -182,20 +196,5 @@ Outputs the cleaned, structured dataset to an S3 Clean Bucket in Parquet format,
 - Quicksight
 - Machine learning workflows
 
-## ✨ What to Screenshot for Your Medium Post
 
-For visual storytelling:
-
-- ✔ Glue Job creation screen
-- ✔ Script editor with your PySpark code pasted
-- ✔ Job run history & successful completion state
-- ✔ S3 Raw → Clean folder structure
-- ✔ Athena query preview (optional bonus)
-
-## 📦 Summary of Part 3
-
-You have now added a full ETL pipeline step that transforms raw CSV files into clean, analytics-ready data. This enhances your Medium post by showing:
-
-- Data cataloging (Part 1 & 2)
-- Optional transformation (Part 3)
-- A full end-to-end mini data engineering project
+[Github Repo](https://github.com/isaacotengdev/AWS_GLUE_ETL_PIPELINE)
